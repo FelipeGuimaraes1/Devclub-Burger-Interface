@@ -66,7 +66,9 @@ function Login() {
           />
           <ErrorMessage>{}</ErrorMessage>
 
-          <Button type="submit">Sign In</Button>
+          <Button type="submit" style={{ marginTop: 35, marginBottom: 15 }}>
+            Sign In
+          </Button>
         </form>
         <SignInLink>
           Não possui conta? <a href="http://">Sign Up</a>
