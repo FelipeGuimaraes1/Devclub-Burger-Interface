@@ -3,7 +3,9 @@ import { useForm } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 
+import { useUser } from "../../hooks/UserContext";
 import LoginImg from "../../assets/login-image.svg";
 import Logo from "../../assets/logo1.svg";
 import Button from "../../components/Button";
@@ -20,6 +22,8 @@ import {
 } from "./styles";
 
 function Login() {
+  const { putUserData } = useUser();
+
   const schema = Yup.object().shape({
     email: Yup.string()
       .email("Por favor, digite um e-mail válido!")
@@ -38,12 +42,19 @@ function Login() {
   });
 
   const onSubmit = async (clientData) => {
-    const response = await api.post("sessions", {
-      email: clientData.email,
-      password: clientData.password,
-    });
+    const { data } = await toast.promise(
+      api.post("sessions", {
+        email: clientData.email,
+        password: clientData.password,
+      }),
+      {
+        pending: "Verificando seus dados...",
+        success: "Seja bem-vindo(a)! 👌",
+        error: "Verifique seu e-amil e senha. 🤯",
+      }
+    );
 
-    console.log(response);
+    putUserData(data);
   };
 
   return (
